@@ -1,0 +1,824 @@
+<?xml version="1.0"?>
+<RBProject version="2009r1">
+<block type="Module" ID="631550526">
+ <ObjName>MacLockButton</ObjName>
+ <ObjContainerID>0</ObjContainerID>
+ <IsClass>1</IsClass>
+ <Superclass>Canvas</Superclass>
+ <ItemFlags>1</ItemFlags>
+ <IsInterface>0</IsInterface>
+ <Compatibility></Compatibility>
+ <HookInstance>
+  <ItemName>Paint</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Sub Paint(g As Graphics)</SourceLine>
+   <SourceLine>g.DrawPicture LockPicture(me.LockState), 0, 0</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Sub</SourceLine>
+  </ItemSource>
+ </HookInstance>
+ <HookInstance>
+  <ItemName>MouseEnter</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Sub MouseEnter()</SourceLine>
+   <SourceLine>if me.Locked then</SourceLine>
+   <SourceLine>if me.Pressed then</SourceLine>
+   <SourceLine>me.LockState = StateLockedPressed</SourceLine>
+   <SourceLine>else</SourceLine>
+   <SourceLine>me.LockState = StateLockedRollover</SourceLine>
+   <SourceLine>end if</SourceLine>
+   <SourceLine>else</SourceLine>
+   <SourceLine>//</SourceLine>
+   <SourceLine>end if</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Sub</SourceLine>
+  </ItemSource>
+ </HookInstance>
+ <HookInstance>
+  <ItemName>MouseExit</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Sub MouseExit()</SourceLine>
+   <SourceLine>if me.Locked then</SourceLine>
+   <SourceLine>if me.Pressed then</SourceLine>
+   <SourceLine>me.LockState = StateLockedRollover</SourceLine>
+   <SourceLine>else</SourceLine>
+   <SourceLine>me.LockState = StateLocked</SourceLine>
+   <SourceLine>end if</SourceLine>
+   <SourceLine>else</SourceLine>
+   <SourceLine>//</SourceLine>
+   <SourceLine>end if</SourceLine>
+   <SourceLine>End Sub</SourceLine>
+  </ItemSource>
+ </HookInstance>
+ <HookInstance>
+  <ItemName>MouseDown</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function MouseDown(X As Integer, Y As Integer) As Boolean</SourceLine>
+   <SourceLine>me.Pressed = true</SourceLine>
+   <SourceLine>if me.Locked then</SourceLine>
+   <SourceLine>me.LockState = StateLockedPressed</SourceLine>
+   <SourceLine>else</SourceLine>
+   <SourceLine>me.LockState  = StateUnlockedPressed</SourceLine>
+   <SourceLine>end if</SourceLine>
+   <SourceLine>return true</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+ </HookInstance>
+ <HookInstance>
+  <ItemName>MouseDrag</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Sub MouseDrag(X As Integer, Y As Integer)</SourceLine>
+   <SourceLine>if me.IsOverButton(X, Y) then</SourceLine>
+   <SourceLine>if me.Locked then</SourceLine>
+   <SourceLine>me.LockState = StateLockedPressed</SourceLine>
+   <SourceLine>else</SourceLine>
+   <SourceLine>me.LockState = StateUnlockedPressed</SourceLine>
+   <SourceLine>end if</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>else</SourceLine>
+   <SourceLine>if me.Locked then</SourceLine>
+   <SourceLine>me.LockState = StateLockedRollover</SourceLine>
+   <SourceLine>else</SourceLine>
+   <SourceLine>me.LockState = StateUnlockedRollover</SourceLine>
+   <SourceLine>end if</SourceLine>
+   <SourceLine>end if</SourceLine>
+   <SourceLine>End Sub</SourceLine>
+  </ItemSource>
+ </HookInstance>
+ <HookInstance>
+  <ItemName>MouseUp</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Sub MouseUp(X As Integer, Y As Integer)</SourceLine>
+   <SourceLine>me.Pressed = false</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>if me.IsOverButton(X, Y) then</SourceLine>
+   <SourceLine>Action</SourceLine>
+   <SourceLine>else</SourceLine>
+   <SourceLine>//</SourceLine>
+   <SourceLine>end if</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>if me.Locked then</SourceLine>
+   <SourceLine>me.LockState = StateLocked</SourceLine>
+   <SourceLine>else</SourceLine>
+   <SourceLine>me.LockState = StateUnlocked</SourceLine>
+   <SourceLine>end if</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Sub</SourceLine>
+  </ItemSource>
+ </HookInstance>
+ <Method>
+  <ItemName>LockPicture</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Shared Function LockPicture(state as Integer) As Picture</SourceLine>
+   <SourceLine>return GetFolderItem(LockPicturePath(state), FolderItem.PathTypeShell).OpenAsPicture</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>exception ufe as UnsupportedFormatException</SourceLine>
+   <SourceLine>return nil</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <Shared>1</Shared>
+  <ItemParams>state as Integer</ItemParams>
+  <ItemResult>Picture</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>LockPicturePath</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Shared Function LockPicturePath(state as Integer) As String</SourceLine>
+   <SourceLine>select case state</SourceLine>
+   <SourceLine>case StateLocked</SourceLine>
+   <SourceLine>return "/System/Library/Frameworks/SecurityInterface.framework/Versions/A/Resources/Lock_Locked State.tif"</SourceLine>
+   <SourceLine>case StateLockedRollover </SourceLine>
+   <SourceLine>return "/System/Library/Frameworks/SecurityInterface.framework/Versions/A/Resources/Lock_Locked State_Rollover.tif"</SourceLine>
+   <SourceLine>case StateLockedPressed</SourceLine>
+   <SourceLine>return "/System/Library/Frameworks/SecurityInterface.framework/Versions/A/Resources/Lock_Locked State_Pressed.tif"</SourceLine>
+   <SourceLine>case StateUnlocked</SourceLine>
+   <SourceLine>return "/System/Library/Frameworks/SecurityInterface.framework/Versions/A/Resources/Lock_Unlocked State.tif"</SourceLine>
+   <SourceLine>case StateUnlockedRollover</SourceLine>
+   <SourceLine>return "/System/Library/Frameworks/SecurityInterface.framework/Versions/A/Resources/Lock_Unlocked State_Rollover.tif"</SourceLine>
+   <SourceLine>case StateUnlockedPressed</SourceLine>
+   <SourceLine>return "/System/Library/Frameworks/SecurityInterface.framework/Versions/A/Resources/Lock_Unlocked State_Pressed.tif"</SourceLine>
+   <SourceLine>case StateAmination1</SourceLine>
+   <SourceLine>return "/System/Library/Frameworks/SecurityInterface.framework/Versions/A/Resources/Lock_Open Anim 01.tif"</SourceLine>
+   <SourceLine>case StateAmination2</SourceLine>
+   <SourceLine>return "/System/Library/Frameworks/SecurityInterface.framework/Versions/A/Resources/Lock_Open Anim 02.tif"</SourceLine>
+   <SourceLine>case StateAmination3</SourceLine>
+   <SourceLine>return "/System/Library/Frameworks/SecurityInterface.framework/Versions/A/Resources/Lock_Open Anim 03.tif"</SourceLine>
+   <SourceLine>case StateAmination4</SourceLine>
+   <SourceLine>return "/System/Library/Frameworks/SecurityInterface.framework/Versions/A/Resources/Lock_Open Anim 04.tif"</SourceLine>
+   <SourceLine>case StateAmination5</SourceLine>
+   <SourceLine>return "/System/Library/Frameworks/SecurityInterface.framework/Versions/A/Resources/Lock_Open Anim 05.tif"</SourceLine>
+   <SourceLine>case StateAmination6</SourceLine>
+   <SourceLine>return "/System/Library/Frameworks/SecurityInterface.framework/Versions/A/Resources/Lock_Open Anim 06.tif"</SourceLine>
+   <SourceLine>case StateAmination7</SourceLine>
+   <SourceLine>return "/System/Library/Frameworks/SecurityInterface.framework/Versions/A/Resources/Lock_Open Anim 07.tif"</SourceLine>
+   <SourceLine>case StateAmination8</SourceLine>
+   <SourceLine>return "/System/Library/Frameworks/SecurityInterface.framework/Versions/A/Resources/Lock_Open Anim 08.tif"</SourceLine>
+   <SourceLine>case StateAmination9</SourceLine>
+   <SourceLine>return "/System/Library/Frameworks/SecurityInterface.framework/Versions/A/Resources/Lock_Open Anim 09.tif"</SourceLine>
+   <SourceLine>case StateAmination10</SourceLine>
+   <SourceLine>return "/System/Library/Frameworks/SecurityInterface.framework/Versions/A/Resources/Lock_Open Anim 10.tif"</SourceLine>
+   <SourceLine>case StateAmination11</SourceLine>
+   <SourceLine>return "/System/Library/Frameworks/SecurityInterface.framework/Versions/A/Resources/Lock_Open Anim 11.tif"</SourceLine>
+   <SourceLine>case StateAmination12</SourceLine>
+   <SourceLine>return "/System/Library/Frameworks/SecurityInterface.framework/Versions/A/Resources/Lock_Open Anim 12.tif"</SourceLine>
+   <SourceLine>case StateAmination13</SourceLine>
+   <SourceLine>return "/System/Library/Frameworks/SecurityInterface.framework/Versions/A/Resources/Lock_Open Anim 13.tif"</SourceLine>
+   <SourceLine>case StateAmination14</SourceLine>
+   <SourceLine>return "/System/Library/Frameworks/SecurityInterface.framework/Versions/A/Resources/Lock_Open Anim 14.tif"</SourceLine>
+   <SourceLine>case StateAmination15</SourceLine>
+   <SourceLine>return "/System/Library/Frameworks/SecurityInterface.framework/Versions/A/Resources/Lock_Open Anim 15.tif"</SourceLine>
+   <SourceLine>else</SourceLine>
+   <SourceLine>return ""</SourceLine>
+   <SourceLine>end select</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <Shared>1</Shared>
+  <ItemParams>state as Integer</ItemParams>
+  <ItemResult>String</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>LockState</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Sub LockState(assigns value as Integer)</SourceLine>
+   <SourceLine>if value = me.LockState then</SourceLine>
+   <SourceLineBreakpoint>1</SourceLineBreakpoint>
+   <SourceLine>return</SourceLine>
+   <SourceLine>end if</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>me.pLockState = value</SourceLine>
+   <SourceLine>me.Refresh</SourceLine>
+   <SourceLine>End Sub</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <Shared>0</Shared>
+  <ItemParams>assigns value as Integer</ItemParams>
+  <ItemResult></ItemResult>
+ </Method>
+ <Method>
+  <ItemName>LockState</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function LockState() As Integer</SourceLine>
+   <SourceLine>return me.pLockState</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <Shared>0</Shared>
+  <ItemParams></ItemParams>
+  <ItemResult>Integer</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>IsOverButton</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function IsOverButton(X as Integer, Y as Integer) As Boolean</SourceLine>
+   <SourceLine>return X &gt;= 0 and X &lt; me.Width and Y &gt;= 0 and Y &lt; me.Height</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <Shared>0</Shared>
+  <ItemParams>X as Integer, Y as Integer</ItemParams>
+  <ItemResult>Boolean</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>ToggleAnimated</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Sub ToggleAnimated()</SourceLine>
+   <SourceLine>dim stateincrement as Integer</SourceLine>
+   <SourceLine>dim lockSound as Sound</SourceLine>
+   <SourceLine>if me.Locked then</SourceLine>
+   <SourceLine>stateincrement = 1</SourceLine>
+   <SourceLine>me.LockState = StateLocked</SourceLine>
+   <SourceLine>lockSound = LockSoundOpening</SourceLine>
+   <SourceLine>else</SourceLine>
+   <SourceLine>stateincrement = -1</SourceLine>
+   <SourceLine>me.LockState = StateUnlocked</SourceLine>
+   <SourceLine>lockSound = LockSoundClosing</SourceLine>
+   <SourceLine>end if</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>if lockSound &lt;&gt; nil then</SourceLine>
+   <SourceLine>lockSound.Play</SourceLine>
+   <SourceLine>end if</SourceLine>
+   <SourceLine>for i as Integer = 1 to 16</SourceLine>
+   <SourceLine>me.LockState = me.LockState + stateincrement</SourceLine>
+   <SourceLine>app.SleepCurrentThread 10</SourceLine>
+   <SourceLine>next</SourceLine>
+   <SourceLine>End Sub</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <Shared>0</Shared>
+  <ItemParams></ItemParams>
+  <ItemResult></ItemResult>
+ </Method>
+ <Method>
+  <ItemName>LockSoundOpening</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Shared Function LockSoundOpening() As Sound</SourceLine>
+   <SourceLine>return GetFolderItem("/System/Library/Frameworks/SecurityInterface.framework/Versions/A/Resources/lockOpening.aif", FolderItem.PathTypeShell).OpenAsSound</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>exception ufe as UnsupportedFormatException</SourceLine>
+   <SourceLine>return nil</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <Shared>1</Shared>
+  <ItemParams></ItemParams>
+  <ItemResult>Sound</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>LockSoundClosing</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Shared Function LockSoundClosing() As Sound</SourceLine>
+   <SourceLine>return GetFolderItem("/System/Library/Frameworks/SecurityInterface.framework/Versions/A/Resources/lockClosing.aif", FolderItem.PathTypeShell).OpenAsSound</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>exception ufe as UnsupportedFormatException</SourceLine>
+   <SourceLine>return nil</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <Shared>1</Shared>
+  <ItemParams></ItemParams>
+  <ItemResult>Sound</ItemResult>
+ </Method>
+ <Hook>
+  <ItemName>Action</ItemName>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemFlags>33</ItemFlags>
+  <SystemFlags>0</SystemFlags>
+  <ItemParams></ItemParams>
+  <ItemResult></ItemResult>
+ </Hook>
+ <Property>
+  <ItemName>pLockState</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>pLockState As Integer</SourceLine>
+   <SourceLine></SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemDeclaration>pLockState As Integer = StateLocked</ItemDeclaration>
+  <ItemFlags>33</ItemFlags>
+  <Shared>0</Shared>
+ </Property>
+ <Property>
+  <ItemName>Locked</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Locked As Boolean</SourceLine>
+   <SourceLine></SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemDeclaration>Locked As Boolean</ItemDeclaration>
+  <ItemFlags>0</ItemFlags>
+  <Shared>0</Shared>
+  <SetAccessor>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Set</SourceLine>
+   <SourceLine>if value = me.Locked then</SourceLine>
+   <SourceLine>return</SourceLine>
+   <SourceLine>end if</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>me.LockState = me.LockState xor 16</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Set</SourceLine>
+  </SetAccessor>
+  <GetAccessor>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Get</SourceLine>
+   <SourceLine>return me.LockState &lt;= 0</SourceLine>
+   <SourceLine>End Get</SourceLine>
+  </GetAccessor>
+ </Property>
+ <Property>
+  <ItemName>Pressed</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Pressed As Boolean</SourceLine>
+   <SourceLine></SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemDeclaration>Pressed As Boolean</ItemDeclaration>
+  <ItemFlags>33</ItemFlags>
+  <Shared>0</Shared>
+ </Property>
+ <ViewBehavior>
+  <ViewProperty>
+   <ObjName>Name</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>ID</PropertyGroup>
+   <ItemType>String</ItemType>
+   <InheritsFrom>Canvas</InheritsFrom>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>Index</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>ID</PropertyGroup>
+   <ItemType>Integer</ItemType>
+   <InheritsFrom>Canvas</InheritsFrom>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>Super</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>ID</PropertyGroup>
+   <InheritsFrom>Canvas</InheritsFrom>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>Left</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>Position</PropertyGroup>
+   <ItemType>Integer</ItemType>
+   <InheritsFrom>Canvas</InheritsFrom>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>Top</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>Position</PropertyGroup>
+   <ItemType>Integer</ItemType>
+   <InheritsFrom>Canvas</InheritsFrom>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>Width</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>Position</PropertyGroup>
+   <PropertyValue>100</PropertyValue>
+   <ItemType>Integer</ItemType>
+   <InheritsFrom>Canvas</InheritsFrom>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>Height</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>Position</PropertyGroup>
+   <PropertyValue>100</PropertyValue>
+   <ItemType>Integer</ItemType>
+   <InheritsFrom>Canvas</InheritsFrom>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>LockLeft</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>Position</PropertyGroup>
+   <ItemType>Boolean</ItemType>
+   <InheritsFrom>Canvas</InheritsFrom>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>LockTop</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>Position</PropertyGroup>
+   <ItemType>Boolean</ItemType>
+   <InheritsFrom>Canvas</InheritsFrom>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>LockRight</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>Position</PropertyGroup>
+   <ItemType>Boolean</ItemType>
+   <InheritsFrom>Canvas</InheritsFrom>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>LockBottom</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>Position</PropertyGroup>
+   <ItemType>Boolean</ItemType>
+   <InheritsFrom>Canvas</InheritsFrom>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>TabPanelIndex</ObjName>
+   <PropertyGroup>Position</PropertyGroup>
+   <PropertyValue>0</PropertyValue>
+   <ItemType>Integer</ItemType>
+   <InheritsFrom>Canvas</InheritsFrom>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>TabIndex</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>Position</PropertyGroup>
+   <PropertyValue>0</PropertyValue>
+   <ItemType>Integer</ItemType>
+   <InheritsFrom>Canvas</InheritsFrom>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>TabStop</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>Position</PropertyGroup>
+   <PropertyValue>True</PropertyValue>
+   <ItemType>Boolean</ItemType>
+   <InheritsFrom>Canvas</InheritsFrom>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>Visible</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>Appearance</PropertyGroup>
+   <PropertyValue>True</PropertyValue>
+   <ItemType>Boolean</ItemType>
+   <InheritsFrom>Canvas</InheritsFrom>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>HelpTag</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>Appearance</PropertyGroup>
+   <ItemType>String</ItemType>
+   <EditorType>MultiLineEditor</EditorType>
+   <InheritsFrom>Canvas</InheritsFrom>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>AutoDeactivate</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>Appearance</PropertyGroup>
+   <PropertyValue>True</PropertyValue>
+   <ItemType>Boolean</ItemType>
+   <InheritsFrom>Canvas</InheritsFrom>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>Enabled</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>Appearance</PropertyGroup>
+   <PropertyValue>True</PropertyValue>
+   <ItemType>Boolean</ItemType>
+   <InheritsFrom>Canvas</InheritsFrom>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>UseFocusRing</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>Appearance</PropertyGroup>
+   <PropertyValue>True</PropertyValue>
+   <ItemType>Boolean</ItemType>
+   <InheritsFrom>Canvas</InheritsFrom>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>Backdrop</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>Appearance</PropertyGroup>
+   <ItemType>Picture</ItemType>
+   <EditorType>Picture</EditorType>
+   <InheritsFrom>Canvas</InheritsFrom>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>AcceptFocus</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>Behavior</PropertyGroup>
+   <ItemType>Boolean</ItemType>
+   <InheritsFrom>Canvas</InheritsFrom>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>AcceptTabs</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>Behavior</PropertyGroup>
+   <ItemType>Boolean</ItemType>
+   <InheritsFrom>Canvas</InheritsFrom>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>DoubleBuffer</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>Behavior</PropertyGroup>
+   <PropertyValue>False</PropertyValue>
+   <ItemType>Boolean</ItemType>
+   <InheritsFrom>Canvas</InheritsFrom>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>EraseBackground</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>Behavior</PropertyGroup>
+   <PropertyValue>True</PropertyValue>
+   <ItemType>Boolean</ItemType>
+   <InheritsFrom>Canvas</InheritsFrom>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>InitialParent</ObjName>
+   <InheritsFrom>Canvas</InheritsFrom>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>Locked</ObjName>
+   <PropertyGroup>Behavior</PropertyGroup>
+   <PropertyValue>0</PropertyValue>
+   <ItemType>Boolean</ItemType>
+  </ViewProperty>
+ </ViewBehavior>
+ <Constant>
+  <ItemName>StateLocked</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemName>StateLocked</ItemName>
+  <ItemType>2</ItemType>
+  <ItemDef>0</ItemDef>
+  <ItemFlags>33</ItemFlags>
+ </Constant>
+ <Constant>
+  <ItemName>StateRollover</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemName>StateRollover</ItemName>
+  <ItemType>2</ItemType>
+  <ItemDef>1</ItemDef>
+  <ItemFlags>33</ItemFlags>
+ </Constant>
+ <Constant>
+  <ItemName>StateLockedRollover</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemName>StateLockedRollover</ItemName>
+  <ItemType>2</ItemType>
+  <ItemDef>-1</ItemDef>
+  <ItemFlags>33</ItemFlags>
+ </Constant>
+ <Constant>
+  <ItemName>StateLockedPressed</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemName>StateLockedPressed</ItemName>
+  <ItemType>2</ItemType>
+  <ItemDef>-2</ItemDef>
+  <ItemFlags>33</ItemFlags>
+ </Constant>
+ <Constant>
+  <ItemName>StateUnlockedPressed</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemName>StateUnlockedPressed</ItemName>
+  <ItemType>2</ItemType>
+  <ItemDef>17</ItemDef>
+  <ItemFlags>33</ItemFlags>
+ </Constant>
+ <Constant>
+  <ItemName>StateUnlocked</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemName>StateUnlocked</ItemName>
+  <ItemType>2</ItemType>
+  <ItemDef>16</ItemDef>
+  <ItemFlags>33</ItemFlags>
+ </Constant>
+ <Constant>
+  <ItemName>StateUnlockedRollover</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemName>StateUnlockedRollover</ItemName>
+  <ItemType>2</ItemType>
+  <ItemDef>18</ItemDef>
+  <ItemFlags>33</ItemFlags>
+ </Constant>
+ <Constant>
+  <ItemName>StateAmination1</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemName>StateAmination1</ItemName>
+  <ItemType>2</ItemType>
+  <ItemDef>1</ItemDef>
+  <ItemFlags>33</ItemFlags>
+ </Constant>
+ <Constant>
+  <ItemName>StateAmination14</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemName>StateAmination14</ItemName>
+  <ItemType>2</ItemType>
+  <ItemDef>14</ItemDef>
+  <ItemFlags>33</ItemFlags>
+ </Constant>
+ <Constant>
+  <ItemName>StateAmination3</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemName>StateAmination3</ItemName>
+  <ItemType>2</ItemType>
+  <ItemDef>3</ItemDef>
+  <ItemFlags>33</ItemFlags>
+ </Constant>
+ <Constant>
+  <ItemName>StateAmination4</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemName>StateAmination4</ItemName>
+  <ItemType>2</ItemType>
+  <ItemDef>4</ItemDef>
+  <ItemFlags>33</ItemFlags>
+ </Constant>
+ <Constant>
+  <ItemName>StateAmination6</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemName>StateAmination6</ItemName>
+  <ItemType>2</ItemType>
+  <ItemDef>6</ItemDef>
+  <ItemFlags>33</ItemFlags>
+ </Constant>
+ <Constant>
+  <ItemName>StateAmination5</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemName>StateAmination5</ItemName>
+  <ItemType>2</ItemType>
+  <ItemDef>5</ItemDef>
+  <ItemFlags>33</ItemFlags>
+ </Constant>
+ <Constant>
+  <ItemName>StateAmination7</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemName>StateAmination7</ItemName>
+  <ItemType>2</ItemType>
+  <ItemDef>7</ItemDef>
+  <ItemFlags>33</ItemFlags>
+ </Constant>
+ <Constant>
+  <ItemName>StateAmination8</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemName>StateAmination8</ItemName>
+  <ItemType>2</ItemType>
+  <ItemDef>8</ItemDef>
+  <ItemFlags>33</ItemFlags>
+ </Constant>
+ <Constant>
+  <ItemName>StateAmination12</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemName>StateAmination12</ItemName>
+  <ItemType>2</ItemType>
+  <ItemDef>12</ItemDef>
+  <ItemFlags>33</ItemFlags>
+ </Constant>
+ <Constant>
+  <ItemName>StateAmination13</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemName>StateAmination13</ItemName>
+  <ItemType>2</ItemType>
+  <ItemDef>13</ItemDef>
+  <ItemFlags>33</ItemFlags>
+ </Constant>
+ <Constant>
+  <ItemName>StateAmination15</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemName>StateAmination15</ItemName>
+  <ItemType>2</ItemType>
+  <ItemDef>15</ItemDef>
+  <ItemFlags>33</ItemFlags>
+ </Constant>
+ <Constant>
+  <ItemName>StateAmination9</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemName>StateAmination9</ItemName>
+  <ItemType>2</ItemType>
+  <ItemDef>9</ItemDef>
+  <ItemFlags>33</ItemFlags>
+ </Constant>
+ <Constant>
+  <ItemName>StateAmination10</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemName>StateAmination10</ItemName>
+  <ItemType>2</ItemType>
+  <ItemDef>10</ItemDef>
+  <ItemFlags>33</ItemFlags>
+ </Constant>
+ <Constant>
+  <ItemName>StateAmination11</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemName>StateAmination11</ItemName>
+  <ItemType>2</ItemType>
+  <ItemDef>11</ItemDef>
+  <ItemFlags>33</ItemFlags>
+ </Constant>
+ <Constant>
+  <ItemName>StateAmination2</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemName>StateAmination2</ItemName>
+  <ItemType>2</ItemType>
+  <ItemDef>2</ItemDef>
+  <ItemFlags>33</ItemFlags>
+ </Constant>
+</block>
+</RBProject>
