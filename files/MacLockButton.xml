@@ -216,7 +216,6 @@
    <TextEncoding>134217984</TextEncoding>
    <SourceLine>Sub LockState(assigns value as Integer)</SourceLine>
    <SourceLine>if value = me.LockState then</SourceLine>
-   <SourceLineBreakpoint>1</SourceLineBreakpoint>
    <SourceLine>return</SourceLine>
    <SourceLine>end if</SourceLine>
    <SourceLine></SourceLine>
@@ -348,6 +347,24 @@
   <ItemParams></ItemParams>
   <ItemResult></ItemResult>
  </Hook>
+ <Note>
+  <ItemName>Read Me</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <NoteLine>Read Me</NoteLine>
+   <NoteLine>MacLockButton implements an animated lock button much like the one used by SecurityInterface.framework.  </NoteLine>
+   <NoteLine></NoteLine>
+   <NoteLine>Project source is hosted at http://github.com/declaresub/maclockbutton/tree/master . It's out there in the wild and free for your use.  If you need a </NoteLine>
+   <NoteLine>more definite license, contact me.</NoteLine>
+   <NoteLine></NoteLine>
+   <NoteLine>Charles Yeomans</NoteLine>
+   <NoteLine>charles@declaresub.com</NoteLine>
+   <NoteLine></NoteLine>
+  </ItemSource>
+  <ItemFlags>0</ItemFlags>
+ </Note>
  <Property>
   <ItemName>pLockState</ItemName>
   <Compatibility></Compatibility>
